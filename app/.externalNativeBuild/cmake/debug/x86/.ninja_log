@@ -54,3 +54,11 @@
 223	794	0	../../../../build/intermediates/cmake/debug/obj/x86/libnetwork.so	67ddf2b63d0ddd84
 794	1212	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	6a3a9c5d2ea7d2f1
 1212	1246	0	../../../../build/intermediates/cmake/debug/obj/x86/libyandexAPI.so	1c7113fe7295496
+2	190	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	101b2eb4e334149c
+190	588	0	../../../../build/intermediates/cmake/debug/obj/x86/libnetwork.so	67ddf2b63d0ddd84
+588	999	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	6a3a9c5d2ea7d2f1
+999	1031	0	../../../../build/intermediates/cmake/debug/obj/x86/libyandexAPI.so	1c7113fe7295496
+1	200	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	101b2eb4e334149c
+200	612	0	../../../../build/intermediates/cmake/debug/obj/x86/libnetwork.so	67ddf2b63d0ddd84
+612	1062	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	6a3a9c5d2ea7d2f1
+1063	1097	0	../../../../build/intermediates/cmake/debug/obj/x86/libyandexAPI.so	1c7113fe7295496

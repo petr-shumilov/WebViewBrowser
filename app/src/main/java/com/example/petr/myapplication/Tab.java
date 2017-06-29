@@ -19,71 +19,71 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Tab extends Fragment {
 
-    private String tabUrl;
-    public WebView tabWebView;
+    // id
     private int tabID;
     private String tabTag;
-    TabsSharedInfo sharedInfo;
-    public boolean OnProgress = false;
 
-    private void init(int id, String url, TabsSharedInfo sharedInfo) {
+    // current tab url
+    private String tabUrl;
+
+    // tab webview instance
+    public WebView tabWebView;
+
+    // needed resources
+    TabsSharedResources sharedResources;
+
+    // status
+    private boolean onProgress = false;
+
+    // thats why can't override constructor
+    private void init(Integer id, String url, TabsSharedResources sharedResources) {
 
         this.tabUrl = url;
         this.tabID = id;
-        this.tabTag = "tab" + tabID;
-        this.sharedInfo = sharedInfo;
-        sharedInfo.TabsIDs.add((Integer) tabID);
-        this.addTabMenuItem(sharedInfo);
-        this.sharedInfo.urlBar.setText("");
+        this.tabTag = Config.TAG_PREFIX + tabID;
+        this.sharedResources = sharedResources;
+
+        this.addTabMenuItem(sharedResources);
     }
 
-    static Tab addTab(int id, String url, TabsSharedInfo tabsSharedInfo) {
-        Tab tab = new Tab();
+    // Static method for more simplicity in MainActivity
+    static void addTab(String url, TabsSharedResources tabsSharedInfo) {
 
+        Integer id = tabsSharedInfo.AddTabResources();
+
+        Tab tab = new Tab();
         tab.init(id, url, tabsSharedInfo);
-        FragmentTransaction ft = tab.sharedInfo.tabsManager.beginTransaction();
+
+        // adding in tabManager
+        FragmentTransaction ft = tabsSharedInfo.GetTabsList().GetTabsManager().beginTransaction();
         ft.add(R.id.content_frame, tab, tab.GetTabTag());
         ft.commit();
 
         // force transaction
-        tab.sharedInfo.tabsManager.executePendingTransactions();
-
-        return tab;
+        tabsSharedInfo.GetTabsList().GetTabsManager().executePendingTransactions();
     }
 
     public void removeTab()
     {
-        if (sharedInfo.TabsIDs.size() >  1){
+        // check ability of removing. For ex if >1 we can
+        if (sharedResources.GetTabsList().CanRemoveTab()){
+
+            int removingTabIndex = sharedResources.GetTabsList().FindTabIndex(this.tabID);
+            Tab removingTab = sharedResources.GetTabsList().GetTabByIndex(removingTabIndex);
 
             // switching politics
-            int removingTabIndex = sharedInfo.TabsIDs.indexOf(this.tabID); // TODO: bad proximity - need some tree like structure
-
             int switchToIndex = ((removingTabIndex == 0) ? 1 : (removingTabIndex - 1));
-
-            Tab removingTab = (Tab) sharedInfo.tabsManager.findFragmentByTag("tab" + this.tabID);
-            Tab switchToTab = (Tab) sharedInfo.tabsManager.findFragmentByTag("tab" + sharedInfo.TabsIDs.get(switchToIndex));
+            Tab switchToTab = sharedResources.GetTabsList().GetTabByIndex(switchToIndex);
 
             if (removingTab != null && switchToTab != null) {
+                sharedResources.RemoveTabResources(removingTab, removingTabIndex);
 
-                removingTab.removeMenuItem();
-                sharedInfo.TabsIDs.remove((int)removingTabIndex);
+                sharedResources.RemoveAndSwitchTab(removingTab, switchToTab);
 
-                FragmentTransaction ft = sharedInfo.tabsManager.beginTransaction();
-                ft.remove(removingTab);
-                ft.show(switchToTab);
-                ft.commit();
-                sharedInfo.tabsManager.executePendingTransactions();
-
-                sharedInfo.currentTab = switchToTab;
-                switchToTab.UpdateUrlBar();
-                switchToTab.SetTabMenuItemChecked();
-
+                sharedResources.SwitchTabResources(switchToTab);
             }
         }
     }
@@ -119,30 +119,34 @@ public class Tab extends Fragment {
         tabWebView.getSettings().setJavaScriptEnabled(true);
         tabWebView.clearCache(true);
 
+        // handlers for starting and finishing loading of page
         tabWebView.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                OnProgress = true;
+                SetOnProgress(true);
                 tabUrl = url;
 
-                UpdateUrlBar();
-                SetVisibleProgress(true);
+                // have access or no
+                if (tabID == sharedResources.GetTabsList().GetCurrentTabID()) {
+                    UpdateUrlBar();
+                    SetVisibleProgress(true);
+                }
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                OnProgress = false;
+                SetOnProgress(false);
+                
                 tabUrl = url;
-                //SetUrlBar();
+                
                 SetTabTitle(view.getTitle());
-
-                // TODO: update shared resources - URLBAR AND progress bar
-                //if (this.equals(sharedInfo.currentTab)) {
-                UpdateUrlBar();
-                SetVisibleProgress(false);
-                //}
+                
+                if (tabID == sharedResources.GetTabsList().GetCurrentTabID()) {
+                    UpdateUrlBar();
+                    SetVisibleProgress(false);
+                }
             }
         });
 
@@ -151,11 +155,10 @@ public class Tab extends Fragment {
         return view;
     }
 
-    private void addTabMenuItem(TabsSharedInfo sharedInfo)
+    private void addTabMenuItem(TabsSharedResources sharedResources)
     {
-        MenuItem newTabMenuItem = sharedInfo.tabsMenu.add(R.id.tabs, this.tabID, Menu.NONE, "New tab");
-        newTabMenuItem.setChecked(true);
-        newTabMenuItem.setCheckable(true);
+        MenuItem newTabMenuItem = sharedResources.GetTabsMenu().add(R.id.tabs, this.tabID, Menu.NONE, R.string.new_tab_title);
+        newTabMenuItem.setCheckable(true).setChecked(true);
         newTabMenuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         newTabMenuItem.setActionView(R.layout.menu_tab_item);
 
@@ -168,12 +171,12 @@ public class Tab extends Fragment {
         });
     }
 
-    private void removeMenuItem() {
-        this.sharedInfo.tabsMenu.removeItem(this.tabID);
+    public void removeMenuItem() {
+        this.sharedResources.GetTabsMenu().removeItem(this.tabID);
     }
 
     public void SetTabMenuItemChecked() {
-        this.sharedInfo.tabsMenu.findItem(this.tabID).setChecked(true);
+        this.sharedResources.GetTabsMenu().findItem(this.tabID).setChecked(true);
     }
 
     public int GetTabID() {
@@ -185,7 +188,7 @@ public class Tab extends Fragment {
     }
 
     public void SetTabTitle(String newTitle) {
-        sharedInfo.tabsMenu.findItem(tabID).setTitle(newTitle);
+        sharedResources.GetTabsMenu().findItem(tabID).setTitle(newTitle);
     }
 
     public String GetUrl() {
@@ -198,19 +201,28 @@ public class Tab extends Fragment {
     }
 
     public void  SetUrlBar(String url){
-        sharedInfo.urlBar.setText(url);
+        sharedResources.GetUrlBar().setText(url);
     }
 
     public void UpdateUrlBar() {
-        sharedInfo.urlBar.setText(this.tabWebView.getUrl());
+        sharedResources.GetUrlBar().setText(this.tabWebView.getUrl());
     }
 
     public void SetVisibleProgress(boolean visible){
-        sharedInfo.progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        sharedResources.GetProgressBar().setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     public void RefreshPage(){
-        sharedInfo.currentTab.tabWebView.loadUrl(sharedInfo.currentTab.tabWebView.getUrl());
+        WebView view = sharedResources.GetTabsList().GetCurrentTab().tabWebView;
+        view.loadUrl(view.getUrl());
+    }
+
+    public void SetOnProgress(boolean onProgress) {
+        this.onProgress = onProgress;
+    }
+
+    public boolean GetOnProgress(){
+        return this.onProgress;
     }
 }
 

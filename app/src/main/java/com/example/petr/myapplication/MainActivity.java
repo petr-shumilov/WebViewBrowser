@@ -4,14 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabItem;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Layout;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,97 +27,44 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private AutoCompleteTextView urlBarView;
-    private Menu menu;
-    private int tabIDIterator;
-    private Tab currentTab;
+    private TabsSharedResources sharedResources;
 
-    private FragmentManager tabsManager;
-    private List<Integer> listOfTabsID;
-    private ProgressBar progressBar;
-
-    // TODO: SHARED RESOURCES
-
-    // TODO: concurrency URLBAR AND PROGRESS
-
-    // TODO: delete  MAGIC constants
-
-    // TODO: locallization
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // init actionbar
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // init navigation
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        // initialize global objects
-        menu = navigationView.getMenu();
-        tabsManager = getSupportFragmentManager();
-        listOfTabsID = new ArrayList<Integer>();
-        tabIDIterator = 0;
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        // initialize shared resources
+        sharedResources = new TabsSharedResources(
+                new TabsList(getSupportFragmentManager()),           // tabs storage
+                navigationView.getMenu(),                            // tabs menu
+                (AutoCompleteTextView)findViewById(R.id.url_text),   // textedit for url
+                (ProgressBar) findViewById(R.id.progress_bar)        // progress bar
+        );
 
-        // URL BAR
-        urlBarView = (AutoCompleteTextView)findViewById(R.id.url_text);
-        urlBarView.setThreshold(2);
-        urlBarView.setAdapter(new SearchAutoCompleteAdapter(this, android.R.layout.simple_expandable_list_item_1));
-        urlBarView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String suggestion = (String) adapterView.getItemAtPosition(position);
-                String url = "https://yandex.ru/search/?text=" + suggestion;
-                currentTab.LoadUrl(url);
-                urlBarView.clearFocus();
-            }
-        });
-        urlBarView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                    switch (i) {
-                        case KeyEvent.KEYCODE_DPAD_CENTER:
-                        case KeyEvent.KEYCODE_ENTER:
-
-                            String url = urlBarView.getText().toString();
-
-                            if ( Patterns.WEB_URL.matcher(url).matches()) {
-                                currentTab.LoadUrl(url);
-                            }
-                            else {
-                                url = "https://yandex.ru/search/?text=" + url;
-                                currentTab.LoadUrl(url);
-                            }
-
-                            return true;
-                        default:
-                            break;
-                    }
-                }
-                return false;
-            }
-        });
-        // URL BAR
-
+        // configuring autocomplete
+        setupUrlBar();
 
         // create new tab
-        addNewTab("http://ya.ru/");
+        Tab.addTab(Config.HOME_PAGE_URL, sharedResources);
 
     }
 
@@ -133,11 +72,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        WebView webView = sharedResources.GetTabsList().GetCurrentTab().tabWebView;
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (currentTab.tabWebView.canGoBack()) {
-            currentTab.tabWebView.goBack();
+        }
+        else if (webView.canGoBack()) {
+            webView.goBack();
             return;
         }
         else {
@@ -157,7 +98,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.refresh_page) {
-            currentTab.RefreshPage();
+            TabsList tabsList = sharedResources.GetTabsList();
+            if (tabsList.СanGetCurrentTab()){
+                tabsList.GetCurrentTab().RefreshPage();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -167,18 +111,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
-        urlBarView.clearFocus();
-        switch (id)
-        {
+        sharedResources.GetUrlBar().clearFocus();
+
+        switch (id) {
             case R.id.add_new_tab:
-                addNewTab("http://ya.ru/");
+                Tab.addTab(Config.HOME_PAGE_URL, sharedResources);
                 break;
             default:
-                switchTabById(id);
-
+                this.selectTab(id);
                 break;
         }
 
@@ -187,45 +129,75 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void addNewTab(String url)
-    {
-        Tab tab = Tab.addTab(tabIDIterator, url, new TabsSharedInfo(tabsManager, listOfTabsID, currentTab, menu, urlBarView, progressBar));
 
-        currentTab = tab;
 
-        tabIDIterator++;
-    }
-
-    private void switchTabById(int id){
+    private void selectTab(int id){
         // find new tab by id of item
-        Tab newTab =  (Tab) tabsManager.findFragmentByTag("tab" + id); // TODO: wrap "tab" + id on method creteTag(id)
+        Tab newTab =  (Tab) sharedResources.GetTabsList().GetTabByTag(Config.TAG_PREFIX + id);
+
+        // current tab
+        Tab oldTab = sharedResources.GetTabsList().GetCurrentTab();
 
         // switching
-        if (newTab != null) {
-            // init transaction
-            FragmentTransaction ft = tabsManager.beginTransaction();
-            ft.hide(currentTab);
-            ft.show(newTab);
-            ft.commit();
+        if (newTab != null && oldTab != null) {
+            // switch between tabs
+            sharedResources.SwitchTabs(oldTab, newTab);
 
-            // force transaction
-            tabsManager.executePendingTransactions();
-
-            // set new current tab
-            currentTab = newTab;
-
-            // TODO: onSelect methdod
-            // update url bar
-            currentTab.UpdateUrlBar();
-            progressBar.setVisibility(currentTab.OnProgress ? View.VISIBLE : View.INVISIBLE);
-
+            // switch resources
+            sharedResources.SwitchTabResources(newTab);
         }
+    }
+
+    private void setupUrlBar(){
+
+        sharedResources.GetUrlBar().setThreshold(Config.AUTOCOMPLETE_THRESHOLD);
+        sharedResources.GetUrlBar().setAdapter(new SearchAutoCompleteAdapter(this, android.R.layout.simple_expandable_list_item_1));
+        sharedResources.GetUrlBar().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String suggestion = (String) adapterView.getItemAtPosition(position);
+
+                String url = Config.SEARCH_API_UPL + suggestion;
+
+                if (sharedResources.GetTabsList().СanGetCurrentTab()) {
+                    sharedResources.GetTabsList().GetCurrentTab().LoadUrl(url);
+                }
+                sharedResources.GetUrlBar().clearFocus();
+            }
+        });
+        sharedResources.GetUrlBar().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (i) {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+
+                            String request = sharedResources.GetUrlBar().getText().toString();
+
+                            if (request.isEmpty())
+                                return true;
+
+                            if (!Patterns.WEB_URL.matcher(request).matches()) {
+                                request = Config.SEARCH_API_UPL  + request;
+                            }
+
+                            if (sharedResources.GetTabsList().СanGetCurrentTab())
+                                sharedResources.GetTabsList().GetCurrentTab().LoadUrl(request);
+
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
     }
-
 
 }

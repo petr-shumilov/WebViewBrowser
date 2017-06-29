@@ -25,11 +25,11 @@ Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(J
     jobjectArray suggestions;
 
     // checking connection status
-    if (jsonResponse.status == CURLE_OK) {
+    if (jsonResponse.Status == CURLE_OK) {
 
         // init JSON parser
         rapidjson::Document jsonData;
-        jsonData.Parse(jsonResponse.data.c_str());
+        jsonData.Parse(jsonResponse.Data.c_str());
 
         // API DEPENDENCE SCOPE
         if (jsonData.IsArray() && jsonData[1].IsArray()) {

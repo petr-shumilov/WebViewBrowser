@@ -54,3 +54,11 @@
 692	1701	0	../../../../build/intermediates/cmake/debug/obj/mips64/libnetwork.so	9e9c3377a2d080d9
 1701	2163	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	653a6583a32493e9
 2163	2228	0	../../../../build/intermediates/cmake/debug/obj/mips64/libyandexAPI.so	77a6353f5ed723e0
+5	607	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	1e111f0f64b601c4
+607	1719	0	../../../../build/intermediates/cmake/debug/obj/mips64/libnetwork.so	9e9c3377a2d080d9
+1719	2181	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	653a6583a32493e9
+2181	2245	0	../../../../build/intermediates/cmake/debug/obj/mips64/libyandexAPI.so	77a6353f5ed723e0
+0	550	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	1e111f0f64b601c4
+550	1598	0	../../../../build/intermediates/cmake/debug/obj/mips64/libnetwork.so	9e9c3377a2d080d9
+1598	2078	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	653a6583a32493e9
+2078	2145	0	../../../../build/intermediates/cmake/debug/obj/mips64/libyandexAPI.so	77a6353f5ed723e0

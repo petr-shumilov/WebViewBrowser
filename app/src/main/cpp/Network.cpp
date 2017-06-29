@@ -1,9 +1,9 @@
 #include "Network.h"
 
-Response::Response(CURLcode _status, std::string _headers, std::string _data) {
-    status = _status;
-    headers = _headers;
-    data = _data;
+Response::Response(CURLcode _Status, std::string _Headers, std::string _Data) {
+    Status = _Status;
+    Headers = _Headers;
+    Data = _Data;
 }
 
 Network::Network(const char *  url) {

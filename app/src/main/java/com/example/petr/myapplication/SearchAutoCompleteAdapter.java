@@ -1,20 +1,12 @@
 package com.example.petr.myapplication;
 
 import android.content.Context;
-import android.content.pm.FeatureInfo;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.StrictMode;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -31,7 +23,7 @@ public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
     private native String[] yandexSuggestAPI(String requestPart);
 
-    public SearchAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
+    public SearchAutoCompleteAdapter(Context context, int resource) {
         super(context, resource);
         this.context = context;
     }
@@ -60,7 +52,7 @@ public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements F
         }
         TextView v = (TextView) convertView;
         v.setText(getItem(position));
-        v.setBackgroundColor(Color.parseColor("#FFFFFF")); // TODO: fix magic constant
+        v.setBackgroundColor(Color.parseColor(Config.SUGGESTION_BACKGROUND_COLOR));
         return convertView;
     }
 

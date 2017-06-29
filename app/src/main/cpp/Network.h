@@ -17,9 +17,9 @@ enum OPTION {
 
 struct Response
 {
-    CURLcode status;
-    std::string headers;
-    std::string data;
+    CURLcode Status;
+    std::string Headers;
+    std::string Data;
     Response(CURLcode _status, std::string _headers, std::string _data);
 };
 
