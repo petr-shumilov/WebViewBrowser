@@ -22,32 +22,28 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
-
-/**
- * Created by petr on 28.06.17.
- */
 
 
 public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
+    private List<String> saggestions;
+    private Context context;
+
     private native String[] yandexSuggestAPI(String requestPart);
-    private List<String> mResults;
-    private Context mContext;
 
     public SearchAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
-        mContext = context;
+        this.context = context;
     }
 
     @Override
     public int getCount() {
-        return mResults.size();
+        return saggestions.size();
     }
 
     @Override
     public String getItem(int index) {
-        return mResults.get(index);
+        return saggestions.get(index);
     }
 
     @Override
@@ -58,13 +54,13 @@ public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements F
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(mContext);
+            LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(android.R.layout.simple_dropdown_item_1line, parent, false);
 
         }
         TextView v = (TextView) convertView;
         v.setText(getItem(position));
-        v.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        v.setBackgroundColor(Color.parseColor("#FFFFFF")); // TODO: fix magic constant
         return convertView;
     }
 
@@ -77,9 +73,9 @@ public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
                 FilterResults filterResults = new FilterResults();
 
-                List<String> results = findSuggestions(charSequence.toString());
+                if (charSequence != null) {
 
-                if (charSequence.length() != 0) {
+                    List<String> results = findSuggestions(charSequence.toString());
                     filterResults.values = results;
                     filterResults.count = results.size();
                 }
@@ -91,7 +87,7 @@ public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements F
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
 
                 if (filterResults != null && filterResults.count > 0) {
-                    mResults = (List<String>) filterResults.values;
+                    saggestions = (List<String>) filterResults.values;
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();
@@ -105,11 +101,15 @@ public class SearchAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
 
     private List<String> findSuggestions(String suggestionPart) {
-
+        // using native method
         String[] a = yandexSuggestAPI(suggestionPart);
 
         List<String> res = new ArrayList<String>(Arrays.asList(a));
 
         return res;
+    }
+
+    static {
+        System.loadLibrary("yandexAPI");
     }
 }

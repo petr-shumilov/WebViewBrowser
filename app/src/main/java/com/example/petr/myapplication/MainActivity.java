@@ -39,30 +39,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    static {
-        System.loadLibrary("yandexAPI");
-    }
-
-
-    private CustomAutoCompleteTextView urlBarView;
+    private AutoCompleteTextView urlBarView;
     private Menu menu;
     private int tabIDIterator;
     private Tab currentTab;
-    //private TabsSharedInfo sharedInfo;
 
     private FragmentManager tabsManager;
     private List<Integer> listOfTabsID;
     private ProgressBar progressBar;
 
-    //private CustomAutoCompleteTextView mAutoCompleteTextView;
-
     // TODO: SHARED RESOURCES
 
+    // TODO: concurrency URLBAR AND PROGRESS
+
+    // TODO: delete  MAGIC constants
+
+    // TODO: locallization
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -81,9 +75,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        //this.currentTab = null;
-        //this.sharedInfo = new TabsSharedInfo(tabsManager, listOfTabsID, currentTab, menu, mAutoCompleteTextView);
-
         // initialize global objects
         menu = navigationView.getMenu();
         tabsManager = getSupportFragmentManager();
@@ -91,11 +82,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabIDIterator = 0;
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-
-        urlBarView = (CustomAutoCompleteTextView)findViewById(R.id.url_text);
+        // URL BAR
+        urlBarView = (AutoCompleteTextView)findViewById(R.id.url_text);
         urlBarView.setThreshold(2);
         urlBarView.setAdapter(new SearchAutoCompleteAdapter(this, android.R.layout.simple_expandable_list_item_1));
-        urlBarView.setLoadingIndicator(progressBar );
         urlBarView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -103,31 +93,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String url = "https://yandex.ru/search/?text=" + suggestion;
                 currentTab.LoadUrl(url);
                 urlBarView.clearFocus();
-                //urlBarView.setText(book);
             }
         });
-
-
-        //String qwe = test("asd");
-        //Log.i("html", qwe);
-        //urlBarView.setText(qwe + "asd");
-        // create new tab
-        addNewTab("http://ya.ru/");
-        //
-
-
-
-        // URL BAR
         urlBarView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN)
-                {
-                    switch (i)
-                    {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (i) {
                         case KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
-                            //addCourseFromTextBox();
 
                             String url = urlBarView.getText().toString();
 
@@ -139,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 currentTab.LoadUrl(url);
                             }
 
-                            //Log.i("KeyPress", urlBarView.getText().toString());
                             return true;
                         default:
                             break;
@@ -151,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // URL BAR
 
 
-
-
+        // create new tab
+        addNewTab("http://ya.ru/");
 
     }
 
@@ -175,24 +148,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.refresh_page) {
-
-            currentTab.tabWebView.loadUrl(currentTab.tabWebView.getUrl());
+            currentTab.RefreshPage();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -200,8 +167,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
+
         urlBarView.clearFocus();
         switch (id)
         {
@@ -246,12 +214,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // set new current tab
             currentTab = newTab;
 
+            // TODO: onSelect methdod
             // update url bar
-            newTab.UpdateUrlBar();
-            if (newTab.OnProgress)
-                progressBar.setVisibility(View.VISIBLE);
-            else
-                progressBar.setVisibility(View.INVISIBLE);
+            currentTab.UpdateUrlBar();
+            progressBar.setVisibility(currentTab.OnProgress ? View.VISIBLE : View.INVISIBLE);
+
         }
     }
 

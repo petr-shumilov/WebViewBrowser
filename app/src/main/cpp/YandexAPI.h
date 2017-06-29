@@ -13,8 +13,6 @@
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(JNIEnv *env,
-                                                                               jobject instance,
-                                                                               jstring requestPart_);
+Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(JNIEnv *env, jobject instance, jstring requestPart_);
 
 #endif //MYAPPLICATION2_YANDEXAPI_H

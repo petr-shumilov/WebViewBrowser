@@ -23,11 +23,6 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by petr on 24.06.17.
- */
-
 public class Tab extends Fragment {
 
     private String tabUrl;
@@ -130,11 +125,9 @@ public class Tab extends Fragment {
                 super.onPageStarted(view, url, favicon);
                 OnProgress = true;
                 tabUrl = url;
-                //SetUrlBar(url);
-                //if (this.equals(sharedInfo.currentTab)) {
-                    UpdateUrlBar();
-                    SetVisibleProgress(true);
-                //}
+
+                UpdateUrlBar();
+                SetVisibleProgress(true);
             }
 
             @Override
@@ -145,7 +138,7 @@ public class Tab extends Fragment {
                 //SetUrlBar();
                 SetTabTitle(view.getTitle());
 
-                // TODO: update shared resources
+                // TODO: update shared resources - URLBAR AND progress bar
                 //if (this.equals(sharedInfo.currentTab)) {
                 UpdateUrlBar();
                 SetVisibleProgress(false);
@@ -214,6 +207,10 @@ public class Tab extends Fragment {
 
     public void SetVisibleProgress(boolean visible){
         sharedInfo.progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    public void RefreshPage(){
+        sharedInfo.currentTab.tabWebView.loadUrl(sharedInfo.currentTab.tabWebView.getUrl());
     }
 }
 

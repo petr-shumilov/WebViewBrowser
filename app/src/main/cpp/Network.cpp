@@ -6,13 +6,13 @@ Response::Response(CURLcode _status, std::string _headers, std::string _data) {
     data = _data;
 }
 
-Network::Network(std::string url) {
+Network::Network(const char *  url) {
     curl_global_init(CURL_GLOBAL_ALL);
 
     this->curlHandler = curl_easy_init();
 
-    if (url != ""){
-        curl_easy_setopt(this->curlHandler, CURLOPT_URL, url.c_str());
+    if (url){
+        curl_easy_setopt(this->curlHandler, CURLOPT_URL, url);
     }
 }
 
@@ -67,4 +67,12 @@ Response Network::Exec() {
     return Response(status, headers, plaintext);
 }
 
-
+std::string Network::urlEncode(const char *source)
+{
+    CURL *curl = curl_easy_init();
+    char *cres = curl_easy_escape(curl, source, strlen(source));
+    std::string res(cres);
+    curl_free(cres);
+    curl_easy_cleanup(curl);
+    return res;
+}

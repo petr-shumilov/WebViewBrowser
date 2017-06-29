@@ -9,15 +9,13 @@
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(JNIEnv *env,
-                                                                               jobject instance,
-                                                                               jstring requestPart_) {
+Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(JNIEnv *env, jobject instance, jstring requestPart_) {
+
     // build request url
-    std::string requestPart = env->GetStringUTFChars(requestPart_, 0);
-    std::string url = API_URL + requestPart;
+    std::string url = API_URL + Network::urlEncode(env->GetStringUTFChars(requestPart_, 0));
 
     // init requester
-    Network *connection = new Network(url);
+    Network *connection = new Network(url.c_str());
     connection->Configure(TIMEOUT, CONNECTION_TIMEOUT);
 
     // execute request
@@ -26,9 +24,10 @@ Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(J
     // results array
     jobjectArray suggestions;
 
+    // checking connection status
     if (jsonResponse.status == CURLE_OK) {
 
-        // init JSON parces
+        // init JSON parser
         rapidjson::Document jsonData;
         jsonData.Parse(jsonResponse.data.c_str());
 
@@ -46,12 +45,15 @@ Java_com_example_petr_myapplication_SearchAutoCompleteAdapter_yandexSuggestAPI(J
 
         }
         else {
+            // return empty array if some failed
+            suggestions = env->NewObjectArray(1, env->FindClass("java/lang/String"), env->NewStringUTF(""));
             env->SetObjectArrayElement(suggestions, 0, env->NewStringUTF(""));
         }
         // API DEPENDENCE SCOPE
 
     }
     else {
+        suggestions = env->NewObjectArray(1, env->FindClass("java/lang/String"), env->NewStringUTF(""));
         env->SetObjectArrayElement(suggestions, 0, env->NewStringUTF(""));
     }
 

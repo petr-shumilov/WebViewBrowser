@@ -27,7 +27,7 @@ class Network
 {
 public:
 
-    Network(std::string url = "");
+    Network(const char * url = "");
 
     ~Network();
 
@@ -36,6 +36,9 @@ public:
 
     // convert response to string
     static size_t write_callback(void *contents, size_t size, size_t nmemb, void *userp);
+
+    // convert strings to urlEncoded
+    static std::string urlEncode(const char * source);
 
     // execute request
     Response Exec();

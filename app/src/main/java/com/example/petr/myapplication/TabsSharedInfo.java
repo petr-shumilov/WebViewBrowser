@@ -1,9 +1,5 @@
 package com.example.petr.myapplication;
 
-/**
- * Created by petr on 27.06.17.
- */
-
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.widget.AutoCompleteTextView;
