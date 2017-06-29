@@ -1,0 +1,80 @@
+
+{
+	"buildFiles" : [ "/home/petr/AndroidStudioProjects/MyApplication2/app/CMakeLists.txt" ],
+	"cleanCommands" : 
+	[
+		"/home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/debug/armeabi --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"curl-Debug-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "curl",
+			"buildType" : "debug",
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/jni/armeabi/libcurl.a",
+			"toolchain" : "1414766184105203989"
+		},
+		"libcrypto-Debug-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "libcrypto",
+			"buildType" : "debug",
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/jni/armeabi/libcrypto.a",
+			"toolchain" : "1414766184105203989"
+		},
+		"libssl-Debug-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "libssl",
+			"buildType" : "debug",
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/jni/armeabi/libssl.a",
+			"toolchain" : "1414766184105203989"
+		},
+		"network-Debug-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "network",
+			"buildCommand" : "/home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/debug/armeabi --target network",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=armv5te-none-linux-androideabi --gcc-toolchain=/home/petr/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=/home/petr/Android/Sdk/ndk-bundle/sysroot  -Dnetwork_EXPORTS -I../../../../src/main/cpp/curl -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /home/petr/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=18 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/cpp/Network.cpp",
+					"workingDirectory" : "/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/debug/armeabi"
+				}
+			],
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/build/intermediates/cmake/debug/obj/armeabi/libnetwork.so",
+			"toolchain" : "1414766184105203989"
+		},
+		"yandexAPI-Debug-armeabi" : 
+		{
+			"abi" : "armeabi",
+			"artifactName" : "yandexAPI",
+			"buildCommand" : "/home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/debug/armeabi --target yandexAPI",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=armv5te-none-linux-androideabi --gcc-toolchain=/home/petr/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=/home/petr/Android/Sdk/ndk-bundle/sysroot  -DyandexAPI_EXPORTS -I../../../../src/main/cpp/curl -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /home/petr/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi -D__ANDROID_API__=18 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC    -c ",
+					"src" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/cpp/YandexAPI.cpp",
+					"workingDirectory" : "/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/debug/armeabi"
+				}
+			],
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/build/intermediates/cmake/debug/obj/armeabi/libyandexAPI.so",
+			"toolchain" : "1414766184105203989"
+		}
+	},
+	"toolchains" : 
+	{
+		"1414766184105203989" : 
+		{
+			"cCompilerExecutable" : "/home/petr/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/home/petr/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
+		}
+	}
+}

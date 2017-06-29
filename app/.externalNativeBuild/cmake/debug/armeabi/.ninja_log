@@ -1,0 +1,13 @@
+# ninja log v5
+0	193	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	b007eacad1979f3a
+194	608	0	../../../../build/intermediates/cmake/debug/obj/armeabi/libnetwork.so	d5ea837a769ca4f6
+608	1151	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	6aafbfe8218121ab
+1151	1190	0	../../../../build/intermediates/cmake/debug/obj/armeabi/libyandexAPI.so	49253ad7b100517
+1	200	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	b007eacad1979f3a
+200	631	0	../../../../build/intermediates/cmake/debug/obj/armeabi/libnetwork.so	d5ea837a769ca4f6
+631	1186	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	6aafbfe8218121ab
+1186	1224	0	../../../../build/intermediates/cmake/debug/obj/armeabi/libyandexAPI.so	49253ad7b100517
+1	198	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	b007eacad1979f3a
+198	535	0	../../../../build/intermediates/cmake/debug/obj/armeabi/libnetwork.so	d5ea837a769ca4f6
+536	1082	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	6aafbfe8218121ab
+1082	1125	0	../../../../build/intermediates/cmake/debug/obj/armeabi/libyandexAPI.so	49253ad7b100517

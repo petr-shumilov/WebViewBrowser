@@ -35,6 +35,7 @@ public class Tab extends Fragment {
     private int tabID;
     private String tabTag;
     TabsSharedInfo sharedInfo;
+    public boolean OnProgress = false;
 
     private void init(int id, String url, TabsSharedInfo sharedInfo) {
 
@@ -127,16 +128,28 @@ public class Tab extends Fragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                OnProgress = true;
                 tabUrl = url;
-                SetUrlBar(url);
+                //SetUrlBar(url);
+                //if (this.equals(sharedInfo.currentTab)) {
+                    UpdateUrlBar();
+                    SetVisibleProgress(true);
+                //}
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                OnProgress = false;
                 tabUrl = url;
-                SetUrlBar(url);
+                //SetUrlBar();
                 SetTabTitle(view.getTitle());
+
+                // TODO: update shared resources
+                //if (this.equals(sharedInfo.currentTab)) {
+                UpdateUrlBar();
+                SetVisibleProgress(false);
+                //}
             }
         });
 
@@ -196,8 +209,11 @@ public class Tab extends Fragment {
     }
 
     public void UpdateUrlBar() {
-        sharedInfo.urlBar.setText(this.tabUrl);
+        sharedInfo.urlBar.setText(this.tabWebView.getUrl());
     }
 
+    public void SetVisibleProgress(boolean visible){
+        sharedInfo.progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+    }
 }
 

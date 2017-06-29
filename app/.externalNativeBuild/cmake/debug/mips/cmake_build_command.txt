@@ -1,0 +1,14 @@
+Executable : /home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake
+arguments : 
+-H/home/petr/AndroidStudioProjects/MyApplication2/app
+-B/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/debug/mips
+-GAndroid Gradle - Ninja
+-DANDROID_ABI=mips
+-DANDROID_NDK=/home/petr/Android/Sdk/ndk-bundle
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/home/petr/AndroidStudioProjects/MyApplication2/app/build/intermediates/cmake/debug/obj/mips
+-DCMAKE_BUILD_TYPE=Debug
+-DCMAKE_MAKE_PROGRAM=/home/petr/Android/Sdk/cmake/3.6.4111459/bin/ninja
+-DCMAKE_TOOLCHAIN_FILE=/home/petr/Android/Sdk/ndk-bundle/build/cmake/android.toolchain.cmake
+-DANDROID_PLATFORM=android-18
+jvmArgs : 
+

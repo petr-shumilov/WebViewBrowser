@@ -1,0 +1,80 @@
+
+{
+	"buildFiles" : [ "/home/petr/AndroidStudioProjects/MyApplication2/app/CMakeLists.txt" ],
+	"cleanCommands" : 
+	[
+		"/home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/mips64 --target clean"
+	],
+	"cppFileExtensions" : [ "cpp" ],
+	"libraries" : 
+	{
+		"curl-Release-mips64" : 
+		{
+			"abi" : "mips64",
+			"artifactName" : "curl",
+			"buildType" : "release",
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/jni/mips64/libcurl.a",
+			"toolchain" : "1414766184105203989"
+		},
+		"libcrypto-Release-mips64" : 
+		{
+			"abi" : "mips64",
+			"artifactName" : "libcrypto",
+			"buildType" : "release",
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/jni/mips64/libcrypto.a",
+			"toolchain" : "1414766184105203989"
+		},
+		"libssl-Release-mips64" : 
+		{
+			"abi" : "mips64",
+			"artifactName" : "libssl",
+			"buildType" : "release",
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/jni/mips64/libssl.a",
+			"toolchain" : "1414766184105203989"
+		},
+		"network-Release-mips64" : 
+		{
+			"abi" : "mips64",
+			"artifactName" : "network",
+			"buildCommand" : "/home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/mips64 --target network",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=mips64el-none-linux-android --gcc-toolchain=/home/petr/Android/Sdk/ndk-bundle/toolchains/mips64el-linux-android-4.9/prebuilt/linux-x86_64 --sysroot=/home/petr/Android/Sdk/ndk-bundle/sysroot  -Dnetwork_EXPORTS -I../../../../src/main/cpp/curl -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/mips64/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /home/petr/Android/Sdk/ndk-bundle/sysroot/usr/include/mips64el-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fintegrated-as -Wa,--noexecstack -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/cpp/Network.cpp",
+					"workingDirectory" : "/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/mips64"
+				}
+			],
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/build/intermediates/cmake/release/obj/mips64/libnetwork.so",
+			"toolchain" : "1414766184105203989"
+		},
+		"yandexAPI-Release-mips64" : 
+		{
+			"abi" : "mips64",
+			"artifactName" : "yandexAPI",
+			"buildCommand" : "/home/petr/Android/Sdk/cmake/3.6.4111459/bin/cmake --build /home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/mips64 --target yandexAPI",
+			"buildType" : "release",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=mips64el-none-linux-android --gcc-toolchain=/home/petr/Android/Sdk/ndk-bundle/toolchains/mips64el-linux-android-4.9/prebuilt/linux-x86_64 --sysroot=/home/petr/Android/Sdk/ndk-bundle/sysroot  -DyandexAPI_EXPORTS -I../../../../src/main/cpp/curl -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/mips64/include -isystem /home/petr/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /home/petr/Android/Sdk/ndk-bundle/sysroot/usr/include/mips64el-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fintegrated-as -Wa,--noexecstack -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "/home/petr/AndroidStudioProjects/MyApplication2/app/src/main/cpp/YandexAPI.cpp",
+					"workingDirectory" : "/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/mips64"
+				}
+			],
+			"output" : "/home/petr/AndroidStudioProjects/MyApplication2/app/build/intermediates/cmake/release/obj/mips64/libyandexAPI.so",
+			"toolchain" : "1414766184105203989"
+		}
+	},
+	"toolchains" : 
+	{
+		"1414766184105203989" : 
+		{
+			"cCompilerExecutable" : "/home/petr/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/home/petr/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++"
+		}
+	}
+}

@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Layout;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,38 +23,49 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+
+
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    private AutoCompleteTextView urlBarView;
+    static {
+        System.loadLibrary("yandexAPI");
+    }
+
+
+    private CustomAutoCompleteTextView urlBarView;
     private Menu menu;
     private int tabIDIterator;
     private Tab currentTab;
+    //private TabsSharedInfo sharedInfo;
 
     private FragmentManager tabsManager;
     private List<Integer> listOfTabsID;
+    private ProgressBar progressBar;
 
-    private AutoCompleteTextView mAutoCompleteTextView; 
+    //private CustomAutoCompleteTextView mAutoCompleteTextView;
 
+    // TODO: SHARED RESOURCES
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,14 +81,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        //this.currentTab = null;
+        //this.sharedInfo = new TabsSharedInfo(tabsManager, listOfTabsID, currentTab, menu, mAutoCompleteTextView);
+
         // initialize global objects
-        urlBarView = (AutoCompleteTextView)findViewById(R.id.url_text);
         menu = navigationView.getMenu();
         tabsManager = getSupportFragmentManager();
         listOfTabsID = new ArrayList<Integer>();
         tabIDIterator = 0;
-        mAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.url_text);
+        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
+
+        urlBarView = (CustomAutoCompleteTextView)findViewById(R.id.url_text);
+        urlBarView.setThreshold(2);
+        urlBarView.setAdapter(new SearchAutoCompleteAdapter(this, android.R.layout.simple_expandable_list_item_1));
+        urlBarView.setLoadingIndicator(progressBar );
+        urlBarView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String suggestion = (String) adapterView.getItemAtPosition(position);
+                String url = "https://yandex.ru/search/?text=" + suggestion;
+                currentTab.LoadUrl(url);
+                urlBarView.clearFocus();
+                //urlBarView.setText(book);
+            }
+        });
+
+
+        //String qwe = test("asd");
+        //Log.i("html", qwe);
+        //urlBarView.setText(qwe + "asd");
         // create new tab
         addNewTab("http://ya.ru/");
         //
@@ -97,11 +131,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                             String url = urlBarView.getText().toString();
 
-                            if (URLUtil.isValidUrl(url)) {
+                            if ( Patterns.WEB_URL.matcher(url).matches()) {
                                 currentTab.LoadUrl(url);
                             }
                             else {
-                                url = "http://" + url;
+                                url = "https://yandex.ru/search/?text=" + url;
                                 currentTab.LoadUrl(url);
                             }
 
@@ -168,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        urlBarView.clearFocus();
         switch (id)
         {
             case R.id.add_new_tab:
@@ -176,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             default:
                 switchTabById(id);
+
                 break;
         }
 
@@ -186,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void addNewTab(String url)
     {
-        Tab tab = Tab.addTab(tabIDIterator, url, new TabsSharedInfo(tabsManager, listOfTabsID, currentTab, menu, urlBarView));
+        Tab tab = Tab.addTab(tabIDIterator, url, new TabsSharedInfo(tabsManager, listOfTabsID, currentTab, menu, urlBarView, progressBar));
 
         currentTab = tab;
 
@@ -208,11 +243,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // force transaction
             tabsManager.executePendingTransactions();
 
-            // update url bar
-            newTab.UpdateUrlBar();
-
             // set new current tab
             currentTab = newTab;
+
+            // update url bar
+            newTab.UpdateUrlBar();
+            if (newTab.OnProgress)
+                progressBar.setVisibility(View.VISIBLE);
+            else
+                progressBar.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -1,0 +1,4 @@
+/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/edit_cache.dir
+/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/rebuild_cache.dir
+/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/network.dir
+/home/petr/AndroidStudioProjects/MyApplication2/app/.externalNativeBuild/cmake/release/armeabi/CMakeFiles/yandexAPI.dir

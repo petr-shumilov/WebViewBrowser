@@ -1,0 +1,13 @@
+# ninja log v5
+0	176	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	5678909403b1b0d4
+176	816	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnetwork.so	47b17408da375b4e
+816	1217	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	a83dca235988676e
+1217	1270	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libyandexAPI.so	2f886a3b7787d76
+0	188	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	5678909403b1b0d4
+188	965	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnetwork.so	47b17408da375b4e
+965	1376	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	a83dca235988676e
+1376	1430	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libyandexAPI.so	2f886a3b7787d76
+0	185	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	5678909403b1b0d4
+185	759	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libnetwork.so	47b17408da375b4e
+759	1177	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	a83dca235988676e
+1177	1230	0	../../../../build/intermediates/cmake/debug/obj/arm64-v8a/libyandexAPI.so	2f886a3b7787d76

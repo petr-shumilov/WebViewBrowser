@@ -1,0 +1,13 @@
+# ninja log v5
+0	178	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	2540343495f8f8c8
+178	893	0	../../../../build/intermediates/cmake/debug/obj/mips/libnetwork.so	bd734b612a0eb866
+893	1321	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	adeb8cc7bbfe2796
+1321	1380	0	../../../../build/intermediates/cmake/debug/obj/mips/libyandexAPI.so	753f30909273c213
+1	210	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	2540343495f8f8c8
+210	1067	0	../../../../build/intermediates/cmake/debug/obj/mips/libnetwork.so	bd734b612a0eb866
+1067	1615	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	adeb8cc7bbfe2796
+1615	1692	0	../../../../build/intermediates/cmake/debug/obj/mips/libyandexAPI.so	753f30909273c213
+1	177	0	CMakeFiles/network.dir/src/main/cpp/Network.cpp.o	2540343495f8f8c8
+177	804	0	../../../../build/intermediates/cmake/debug/obj/mips/libnetwork.so	bd734b612a0eb866
+804	1231	0	CMakeFiles/yandexAPI.dir/src/main/cpp/YandexAPI.cpp.o	adeb8cc7bbfe2796
+1231	1290	0	../../../../build/intermediates/cmake/debug/obj/mips/libyandexAPI.so	753f30909273c213
